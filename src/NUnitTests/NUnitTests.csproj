@@ -1,0 +1,86 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1FC4D520-FBB8-44D0-9117-7EBDEE09DD0B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NUnitTests</RootNamespace>
+    <AssemblyName>NUnitTests</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.4.6.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ThirdParty\NUnit\bin\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\PluginManager.cs" />
+    <Compile Include="Core\ProcessingPipeline.cs" />
+    <Compile Include="Core\Topology.cs" />
+    <Compile Include="FrameTypes\VideoFrame.cs" />
+    <Compile Include="plugins\AForgeVideoSourceTester.cs" />
+    <Compile Include="plugins\OpenCVFaceDetectorTester.cs" />
+    <Compile Include="plugins\SplitterTester.cs" />
+    <Compile Include="plugins\VideoMirrorTester.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FraMMWorks\FraMMWorks.csproj">
+      <Project>{DC15423D-11C4-44BC-A5F6-A7942AD43D72}</Project>
+      <Name>FraMMWorks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\Filter\OpenCVFaceDetector\OpenCVFaceDetector.vcproj">
+      <Project>{86A41611-5AF3-4020-84E4-25D02CC2DEBA}</Project>
+      <Name>OpenCVFaceDetector</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\Filter\Splitter\Splitter.csproj">
+      <Project>{A5250E17-AA4B-4DBB-8FD8-2CB91CE28F87}</Project>
+      <Name>Splitter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\Filter\VideoMirror\VideoMirror.csproj">
+      <Project>{39EB6290-31D7-4D49-AF9A-67FC4407DE7B}</Project>
+      <Name>VideoMirror</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\Input\AForgeVideoSource\AForgeVideoSource.csproj">
+      <Project>{E4F422EA-9CC8-44DF-89FE-2FA0F2CF3943}</Project>
+      <Name>AForgeVideoSource</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PluginBase\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
