@@ -1,0 +1,16 @@
+Sourceforge public description:
+Multimedia research environment to assist development and testing of machine learning algorithms through "drag and drop" construction of processing graphs and real-time feedback of results.
+
+Sourceforge registration description:
+The framework aims to provide an environment for researchers involved in multimedia based machine learning to develop, test and deploy their algorithms without concern for data access and display. It is able to handle any type of frame based data, such as video, audio or numerical data.
+
+The base framework simply manages a collection of plugins by allowing creation and execution of "plugin graphs" and providing a method to display real-time processing information.
+
+A plugin graph may be generated through a GUI interface similar to Microsoft's direct show "graph editor" program. Available plugins are dragged onto a drawing area and a user links the compatible input/output capabilities of each plugin. The graph topology may be saved to an XML file, which can be loaded by the FraMMworks library (either in GUI or processing mode).
+
+Each plugin may expose settings which may be modified through the GUI on-the-fly providing instant feedback on algorithm performance. The processing topology itself may also be modified while processing to allow visual comparisons between plugin graphs.
+
+A simple usage example may be in developing a facial recognition application. Five plugins would be joined - VideoCameraSource, GreyscaleFilter, FaceExtractor, FaceRecognition and AlarmOuput. Video frames are gabbed by VideoCameraSource, converted to a suitable image format by GreyscaleFilter. Face-looking objects are found by FaceExtractor and FaceRecognition attempts to match the face to a known subject and finally passes details of the match to an AlarmOutput.
+
+FraMMWorks differs from similar applications such as "GraphEdit" (http://en.wikipedia.org/wiki/GraphEdit) or GStreamer (http://en.wikipedia.org/wiki/Gstreamer) primarily in that is is for research use and prefers simplicity (in plugin design and overall usage) over the complexities of these other multimedia frameworks. 
+
