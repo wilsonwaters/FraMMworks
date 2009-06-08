@@ -22,6 +22,7 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 using FraMMWorks.Interfaces;
 
@@ -198,6 +199,8 @@ namespace FraMMWorks.Core
       /// </summary>
       private Assembly[] availablePluginAssemblies;
 
+      [DllImport("kernel32.dll")]
+      static extern bool SetDllDirectory(string pathName);
 
       //----------------------- public data members --------------------------
       /// <summary>
@@ -255,6 +258,9 @@ namespace FraMMWorks.Core
          // Temp store for plugin details. Saved to class fields later
          List<PluginInfo> pluginInfo = new List<PluginInfo>();
          List<Assembly> pluginAssemblies = new List<Assembly>();
+
+         // First, add the plugins directory to the dll search path
+         bool result = SetDllDirectory(PLUGIN_DIRECTORY);
 
          // scan the same directory as the .exe AND the PLUGIN_DIRECTORY.
          string[] pluginFilesStartupDir = Directory.GetFiles(Application.StartupPath, "*.DLL");

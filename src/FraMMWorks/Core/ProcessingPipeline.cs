@@ -149,7 +149,10 @@ namespace FraMMWorks.Core
                if (currentTopologyGraph[i].thread.ThreadState != System.Threading.ThreadState.Stopped)
                {
                   // mmm... for some reason this thread isn't stopping in a reasonable time.
-                  ControlAPI.Instance.nonFatalError(this, "Couldn't stop the joiner thread between {0}:{1} -> {2}:{3}", currentTopologyGraph[i].edge.vertex1.Name, currentTopologyGraph[i].edge.vertex1.OutputCapabilities[currentTopologyGraph[i].edge.vertex1Pin].Name, currentTopologyGraph[i].edge.vertex2.Name, currentTopologyGraph[i].edge.vertex2.InputCapabilities[currentTopologyGraph[i].edge.vertex2Pin].Name);
+                  if (currentTopologyGraph[i].edge.vertex1 == null || currentTopologyGraph[i].edge.vertex2 == null)
+                     ControlAPI.Instance.nonFatalError(this, "Couldn't stop the joiner thread between two plugins AND one of them was null");
+                  else
+                     ControlAPI.Instance.nonFatalError(this, "Couldn't stop the joiner thread between {0}:{1} -> {2}:{3}", currentTopologyGraph[i].edge.vertex1.Name, currentTopologyGraph[i].edge.vertex1.OutputCapabilities[currentTopologyGraph[i].edge.vertex1Pin].Name, currentTopologyGraph[i].edge.vertex2.Name, currentTopologyGraph[i].edge.vertex2.InputCapabilities[currentTopologyGraph[i].edge.vertex2Pin].Name);
                }
             }
 
@@ -371,20 +374,39 @@ namespace FraMMWorks.Core
                }
             }
          }
-         catch (ThreadAbortException tae)
+         catch (ThreadAbortException ex)
          {
-            ControlAPI.Instance.debugMessage(this, "edge thread exiting for \"{0}\":{1}({2}) -> \"{3}\":{4}({5})", e.vertex1.Name, e.vertex1Pin, e.vertex1.OutputCapabilities[e.vertex1Pin].Name, e.vertex2.Name, e.vertex2Pin, e.vertex2.InputCapabilities[e.vertex2Pin].Name);
+            /*
+            if (e.vertex1 == null)
+               ControlAPI.Instance.nonFatalError(this, "edge thread exiting for <null> -> \"{0}\":{1}({2}). \r\n{3}", e.vertex2.Name, e.vertex2Pin, e.vertex2.InputCapabilities[e.vertex2Pin].Name, ex.Message);
+            else if (e.vertex2 == null)
+               ControlAPI.Instance.nonFatalError(this, "edge thread exiting for \"{0}\":{1}({2}) -> <null>. \r\n{3}", e.vertex1.Name, e.vertex1Pin, e.vertex1.OutputCapabilities[e.vertex1Pin].Name, ex.Message);
+            else
+               ControlAPI.Instance.nonFatalError(this, "edge thread exiting for \"{0}\":{1}({2}) -> \"{3}\":{4}({5}). \r\n{6}", e.vertex1.Name, e.vertex1Pin, e.vertex1.OutputCapabilities[e.vertex1Pin].Name, e.vertex2.Name, e.vertex2Pin, e.vertex2.InputCapabilities[e.vertex2Pin].Name, ex.Message);
+             */
          }
-         catch (ThreadInterruptedException tie)
+         catch (ThreadInterruptedException ex)
          {
-            ControlAPI.Instance.debugMessage(this, "edge thread exiting for \"{0}\":{1}({2}) -> \"{3}\":{4}({5})", e.vertex1.Name, e.vertex1Pin, e.vertex1.OutputCapabilities[e.vertex1Pin].Name, e.vertex2.Name, e.vertex2Pin, e.vertex2.InputCapabilities[e.vertex2Pin].Name);
+            /*
+            if (e.vertex1 == null)
+               ControlAPI.Instance.nonFatalError(this, "edge thread exiting for <null> -> \"{0}\":{1}({2}). \r\n{3}", e.vertex2.Name, e.vertex2Pin, e.vertex2.InputCapabilities[e.vertex2Pin].Name, ex.Message);
+            else if (e.vertex2 == null)
+               ControlAPI.Instance.nonFatalError(this, "edge thread exiting for \"{0}\":{1}({2}) -> <null>. \r\n{3}", e.vertex1.Name, e.vertex1Pin, e.vertex1.OutputCapabilities[e.vertex1Pin].Name, ex.Message);
+            else
+               ControlAPI.Instance.nonFatalError(this, "edge thread exiting for \"{0}\":{1}({2}) -> \"{3}\":{4}({5}). \r\n{6}", e.vertex1.Name, e.vertex1Pin, e.vertex1.OutputCapabilities[e.vertex1Pin].Name, e.vertex2.Name, e.vertex2Pin, e.vertex2.InputCapabilities[e.vertex2Pin].Name, ex.Message);
+             */
          }
          catch (Exception ex)
          {
             // We,re only interested in errors if the pipeline is active.
             if (active)
             {
-               ControlAPI.Instance.nonFatalError(this, "Error in plugin. thread exiting for \"{0}\":{1}({2}) -> \"{3}\":{4}({5}). \r\n{6}", e.vertex1.Name, e.vertex1Pin, e.vertex1.OutputCapabilities[e.vertex1Pin].Name, e.vertex2.Name, e.vertex2Pin, e.vertex2.InputCapabilities[e.vertex2Pin].Name, ex.Message);
+               if (e.vertex1 == null)
+                  ControlAPI.Instance.nonFatalError(this, "Error in plugin. thread exiting for <null> -> \"{0}\":{1}({2}). \r\n{3}", e.vertex2.Name, e.vertex2Pin, e.vertex2.InputCapabilities[e.vertex2Pin].Name, ex.Message);
+               else if (e.vertex2 == null)
+                  ControlAPI.Instance.nonFatalError(this, "Error in plugin. thread exiting for \"{0}\":{1}({2}) -> <null>. \r\n{3}", e.vertex1.Name, e.vertex1Pin, e.vertex1.OutputCapabilities[e.vertex1Pin].Name, ex.Message);
+               else
+                  ControlAPI.Instance.nonFatalError(this, "Error in plugin. thread exiting for \"{0}\":{1}({2}) -> \"{3}\":{4}({5}). \r\n{6}", e.vertex1.Name, e.vertex1Pin, e.vertex1.OutputCapabilities[e.vertex1Pin].Name, e.vertex2.Name, e.vertex2Pin, e.vertex2.InputCapabilities[e.vertex2Pin].Name, ex.Message);
             }
          }
       }

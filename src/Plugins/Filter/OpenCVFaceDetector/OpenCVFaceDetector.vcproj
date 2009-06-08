@@ -28,6 +28,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+				AdditionalDependencies=""
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -90,6 +91,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				Description="Copying dlls"
+				CommandLine="copy ..\..\..\..\thirdparty\OpenCV\bin\cxcore100.dll $(OutDir) &amp;&amp; copy ..\..\..\..\thirdparty\OpenCV\bin\cv100.dll  $(OutDir)"
 			/>
 		</Configuration>
 		<Configuration
@@ -163,6 +166,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				Description="Copying dlls"
+				CommandLine="copy ..\..\..\..\thirdparty\OpenCV\bin\cxcore100.dll $(OutDir) &amp;&amp; copy ..\..\..\..\thirdparty\OpenCV\bin\cv100.dll  $(OutDir)"
 			/>
 		</Configuration>
 	</Configurations>

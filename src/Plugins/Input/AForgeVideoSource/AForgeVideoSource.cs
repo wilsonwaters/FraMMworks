@@ -342,7 +342,14 @@ namespace AForgeVideoSource
       private void aforgeError_cb(object sender, VideoSourceErrorEventArgs e)
       {
          // save video source error's description
-         ControlAPI.Instance.nonFatalError(this, e.Description);
+         if (e.Description.Contains("not load file or assembly"))
+         {
+            ControlAPI.Instance.fatalError(this, e.Description);
+         }
+         else
+         {
+            ControlAPI.Instance.nonFatalError(this, e.Description);
+         }
          lastVideoSourceError = e.Description;
       }
 
