@@ -86,12 +86,21 @@ namespace FraMMWorks.Core
          /// Two GraphEntries are the same if each vertex references the *same* object and
          /// the connected pins are the same.
          /// </summary>
-         /// <param name="str"></param>
+         /// <param name="ge">the entry we are comparing</param>
          /// <returns></returns>
          public bool Equals(GraphEntry ge)
          {
             return (this.vertex1 == ge.vertex1 && this.vertex2 == ge.vertex2 && this.vertex1Pin == ge.vertex1Pin && this.vertex2Pin == ge.vertex2Pin);
          }
+
+         /// <summary>
+         /// Gets the hash code of this object
+         /// </summary>
+         /// <returns></returns>
+         //public override int GetHashCode()
+         //{
+         //    return base.GetHashCode();
+         //}
       }
 
       //----------------------- public data members --------------------------
@@ -217,13 +226,12 @@ namespace FraMMWorks.Core
                List<FraMMWorks.PluginBase.Setting> settings;
                switch (info.name)
                {
-                  /*
                   case "AForge Video Source":
-                     plugins[0] = PluginManager.Instance.getNewPluginInstance(info);
-                     activePlugins.Add(plugins[0]);
-                      settings = plugins[0].getSettings();
+                     plugin = PluginManager.Instance.getNewPluginInstance(info);
+                     activePlugins.Add(plugin); plugins[0] = plugin;
+                      settings = plugin.getSettings();
                      //settings[0].value = @"http://192.168.0.14:8080/mjpg/video.mjpg";
-                     settings[0].value = @"S:\FraMMWorks\testData\test.avi";
+                      settings[0].value = @"C:\Documents and Settings\wilson\Desktop\FraMMWorks2\testData\test.avi";
                      //settings[0].value = @"S:\FraMMWorks\testData\testVideo-MJPEG.avi";
                      //settings[0].value = @"S:\FraMMWorks\testData\20-XViD_MPEG4.avi";
                      //settings[0].value = @"@device:sw:{860BB310-5D01-11D0-BD3B-00A0C911CE86}\\wwigo";
@@ -231,8 +239,8 @@ namespace FraMMWorks.Core
                      //settings[1].value = "MJPEG URL";
                      settings[1].value = "File";
                      break;
-                  */
 
+                  /*
                   case "Image File Source":
                      plugin = PluginManager.Instance.getNewPluginInstance(info);
                      activePlugins.Add(plugin); plugins[0] = plugin;
@@ -243,6 +251,7 @@ namespace FraMMWorks.Core
                      settings[1].value = 10;
                      settings[2].value = false;
                      break;
+                   */ 
 
                   case "Frame Splitter":
                      plugin = PluginManager.Instance.getNewPluginInstance(info);
@@ -257,13 +266,13 @@ namespace FraMMWorks.Core
                   //   break;
 
                   case "OpenCV Face Detector":
-                     plugin = PluginManager.Instance.getNewPluginInstance(info);
+                        plugin = PluginManager.Instance.getNewPluginInstance(info);
                      activePlugins.Add(plugin); plugins[2] = plugin;
                      settings = plugin.getSettings();
                      lock (settings[0])
                      {
                         //settings[0].value = @"C:\testData\haarcascade_frontalface_alt.xml";
-                        settings[0].value = @"S:\FraMMWorks\bin\Debug\haarcascade_frontalface_alt.xml";
+                        settings[0].value = @".\haarcascade_frontalface_alt.xml";
                         settings[0].isDirty = true;
                      }
                      break;
