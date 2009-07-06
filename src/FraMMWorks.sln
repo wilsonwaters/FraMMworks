@@ -29,6 +29,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCVTest", "Plugins\Filte
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCVFaceDetector", "Plugins\Filter\OpenCVFaceDetector\OpenCVFaceDetector.vcproj", "{86A41611-5AF3-4020-84E4-25D02CC2DEBA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D65FAF8D-0118-474A-A65F-53D7F4090190} = {D65FAF8D-0118-474A-A65F-53D7F4090190}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageFileSource", "Plugins\Input\ImageFileSource\ImageFileSource.csproj", "{4FE7C118-4A15-4E43-9B1C-B570FE338DFA}"
 EndProject
