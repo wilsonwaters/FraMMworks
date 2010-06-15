@@ -22,23 +22,20 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
 
 using FraMMWorks.Interfaces;
 
 namespace FraMMWorks.Core
 {
    /// <remarks>
-   /// Manages the plugin chain topology. Provides a way to graphically
-   /// build the topology, save and load it to a file and access information
-   /// about the plugins (such as their drawable component).
+   /// Manages the plugin chain topology. Provides a way to save and load it
+   /// to a file and access information  about the plugins 
+   /// (such as their drawable component).
    /// 
-   /// Future work will allow this class to draw itself as a control and
-   /// be modified graphically by users.
    /// 
    /// Wilson Waters W.Waters@curtin.edu.au 20080115
    /// </remarks>
-   public partial class Topology : Form
+   public class Topology : ITopology
    {
       //----------------------- public structs --------------------------------
       /// <summary>
@@ -103,42 +100,9 @@ namespace FraMMWorks.Core
          //}
       }
 
-      //----------------------- public data members --------------------------
-      /// <summary>
-      /// get the current state of the topology.
-      /// </summary>
-      public List<GraphEntry> TopologyGraph
-      {
-         get { lock (this) { return topologyGraph; }; }
-      }
 
-      /// <summary>
-      /// Get all plugins which are active on the topology
-      /// (but no necessarily connected to anything)
-      /// </summary>
-      public List<IPlugin> ActivePlugins
-      {
-         get { lock (this) { return activePlugins; }; }
-      }
-
-      /// <summary>
-      /// Determines how this form closes and disables some features.
-      /// </summary>
-      public bool Standalone
-      {
-         get { return standalone; }
-         set
-         { 
-            standalone = value;
-            this.closeToolStripMenuItem.Text = (standalone ? "Exit" : "Hide");
-         }
-      }
 
       //----------------------- private data members --------------------------
-      /// <summary>
-      /// List of plugins can we know about.
-      /// </summary>
-      private PluginManager.PluginInfo[] availablePlugins;
 
       /// <summary>
       /// The actual Incidence list graph of this topology.
@@ -160,12 +124,6 @@ namespace FraMMWorks.Core
       /// </summary>
       private List<IPlugin> activePlugins;
 
-      /// <summary>
-      /// True if this form is being used as a standalone topology creator.
-      /// Some of the functinality will be disabled.
-      /// </summary>
-      private bool standalone;
-
 
 
       //----------------------- Constructors ----------------------------------
@@ -174,14 +132,28 @@ namespace FraMMWorks.Core
       /// </summary>
       public Topology()
       {
-         InitializeComponent();
-
-         standalone = true; // default
-
-         availablePlugins = PluginManager.Instance.AvailablePlugins;
          topologyGraph = new List<GraphEntry>();
          activePlugins = new List<IPlugin>();
       }
+
+      //----------------------- Getters/Setters --------------------------
+      /// <summary>
+      /// get the current state of the topology.
+      /// </summary>
+      public List<GraphEntry> GetTopologyGraph()
+      {
+         return topologyGraph;
+      }
+
+      /// <summary>
+      /// Get all plugins which are active on the topology
+      /// (but no necessarily connected to anything)
+      /// </summary>
+      public List<IPlugin> GetActivePlugins()
+      {
+         return activePlugins;
+      }
+
 
       //----------------------- public processing members ---------------------
       /// <summary>
@@ -220,7 +192,7 @@ namespace FraMMWorks.Core
             // Work out which plugin is what - this would normally be done through
             // the GUI initially, then streight from XML files on load(), hence the names
             IPlugin[] plugins = new IPlugin[10]; // need this to store the order
-            foreach (PluginManager.PluginInfo info in availablePlugins)
+            foreach (PluginManager.PluginInfo info in PluginManager.Instance.AvailablePlugins)
             {
                IPlugin plugin; // temp storage;
                List<FraMMWorks.PluginBase.Setting> settings;
@@ -334,52 +306,6 @@ namespace FraMMWorks.Core
       }
 
       //----------------------- private processing members --------------------
-      private void closeMe()
-      {
-         // If this is a subform, just hide it.
-         // Otherwise, we assume it's a standalone application and close the form
-         if (standalone)
-            this.Close();
-         else
-            this.Hide();
-      }
-
-      //----------------------- GUI Drawing members ---------------------------
-
-
-
-      private void openToolStripMenuItem_Click(object sender, EventArgs e)
-      {
-         FileDialog dialog = new OpenFileDialog();
-         dialog.Filter = "FraMMWorks XML File (*.xml) | *.xml";
-         dialog.ShowDialog();
-         try
-         {
-            load(dialog.FileName);
-         }
-         catch (Exception ex)
-         {
-            MessageBox.Show("Error loading XML topology file: " + ex.Message, "FraMMWorks Topology Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-         }
-         toolStripStatusLabel_statusMessages.Text = "Loaded " + dialog.FileName;
-      }
-
-      private void closeToolStripMenuItem_Click(object sender, EventArgs e)
-      {
-         Close();
-      }
-
-      private void Topology_FormClosing(object sender, FormClosingEventArgs e)
-      {
-         // If this is a subform, just hide it.
-         // Otherwise, we assume it's a standalone application and close the form
-         if (!standalone)
-         {
-            e.Cancel = true;
-            this.Hide();
-         }
-      }
-
 
 
    }

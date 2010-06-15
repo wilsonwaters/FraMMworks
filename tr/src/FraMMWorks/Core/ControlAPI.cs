@@ -340,7 +340,7 @@ namespace FraMMWorks.Core
          if (OnDisplayControlChange != null)
          {
             List<Control> controls = new List<Control>();
-            foreach (Interfaces.IPlugin plugin in topology.ActivePlugins)
+            foreach (Interfaces.IPlugin plugin in topology.GetActivePlugins())
             {
                Control control = plugin.getDisplayControl();
                if (control != null)
@@ -369,7 +369,7 @@ namespace FraMMWorks.Core
          updateTopology(topology);
 
          // now start all the souces and reset any controllable sources to the first frame
-         foreach (IPlugin plugin in this.topology.ActivePlugins)
+         foreach (IPlugin plugin in this.topology.GetActivePlugins())
          {
             if (plugin is ControllableSource)
             {
@@ -405,7 +405,7 @@ namespace FraMMWorks.Core
          if (this.topology != null)
          {
             // first, stop all the source plugins
-            foreach (IPlugin plugin in this.topology.ActivePlugins)
+            foreach (IPlugin plugin in this.topology.GetActivePlugins())
             {
                if (plugin is Source)
                {
@@ -468,7 +468,7 @@ namespace FraMMWorks.Core
          // set the currentFrameNum to this value 1st
          currentFrameNumber = frameNum;
 
-         foreach (IPlugin plugin in this.topology.ActivePlugins)
+         foreach (IPlugin plugin in this.topology.GetActivePlugins())
          {
             if (plugin is ControllableSource)
             {

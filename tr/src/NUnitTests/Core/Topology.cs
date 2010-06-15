@@ -35,9 +35,9 @@ namespace NUnitTests.Core
          FraMMWorks.Core.Topology t = new FraMMWorks.Core.Topology();
          t.load(TEST_TOPOLOGY_FILE);
 
-         Assert.IsNotNull(t.TopologyGraph, "topology graph was null");
+         Assert.IsNotNull(t.GetTopologyGraph(), "topology graph was null");
 
-         Assert.AreEqual(4, t.TopologyGraph.Count, "There was a different number of edges(links) in the topology then expected");
+         Assert.AreEqual(4, t.GetTopologyGraph().Count, "There was a different number of edges(links) in the topology then expected");
       }
 
       public void message(String message)
