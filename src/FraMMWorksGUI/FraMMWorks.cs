@@ -32,9 +32,14 @@ namespace FraMMWorksGUI
    {
       //------------------------- private class fields ------------------------
       /// <summary>
-      /// The topology form
+      /// The topology data model 
       /// </summary>
       private Topology topology;
+
+      /// <summary>
+      /// The form which edits the topology
+      /// </summary>
+      private TopologyEditor topologyEditor;
 
       /// <summary>
       /// The debuc console form
@@ -259,13 +264,14 @@ namespace FraMMWorksGUI
       private void layoutManagerToolStripMenuItem_Click(object sender, EventArgs e)
       {
          // Load the topology form if it hasn't been loaded before, otherwise just show it
-         if (topology == null || topology.IsDisposed)
+         if (topologyEditor == null || topologyEditor.IsDisposed)
          {
-            topology = new Topology();
-            topology.Standalone = false;
+            topologyEditor = new TopologyEditor();
+            topologyEditor.Standalone = false;
+            topologyEditor.Topology = this.topology;
          }
 
-         topology.Show();
+         topologyEditor.Show();
 
       }
 
@@ -276,7 +282,7 @@ namespace FraMMWorksGUI
 
       private void debugConsoleToolStripMenuItem_Click(object sender, EventArgs e)
       {
-         // Load the topology form if it hasn't been loaded before, otherwise just show it
+         // Load the debug form if it hasn't been loaded before, otherwise just show it
          if (debugConsole == null || debugConsole.IsDisposed)
          {
             debugConsole = new DebugConsole();
@@ -294,13 +300,13 @@ namespace FraMMWorksGUI
       /// <param name="e"></param>
       private void openToolStripMenuItem_Click(object sender, EventArgs e)
       {
-         if (topology != null && !topology.IsDisposed)
+         if (topology != null)
          {
             DialogResult res = MessageBox.Show("Save existing topology?", "Save topology", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             if (res == DialogResult.Yes)
             {
                FileDialog dialog = new SaveFileDialog();
-               dialog.Filter = "FraMMWorks XML File (*.xml) | *.xml";
+               dialog.Filter = "FraMMWorks Model File (*.fxm) | *.fxm";
                dialog.ShowDialog();
                if (dialog.FileName.Length > 0)
                {
@@ -320,7 +326,7 @@ namespace FraMMWorksGUI
                }
                else
                {
-                  return;
+                  return; 
                }
             }
 
@@ -331,10 +337,9 @@ namespace FraMMWorksGUI
 
          // create the new one.
          topology = new Topology();
-         topology.Standalone = false;
 
          FileDialog openDialog = new OpenFileDialog();
-         openDialog.Filter = "FraMMWorks XML File (*.xml) | *.xml";
+         openDialog.Filter = "FraMMWorks Model File (*.fxm) | *.fxm";
          openDialog.ShowDialog();
          if (openDialog.FileName.Length > 0)
          {
@@ -345,9 +350,16 @@ namespace FraMMWorksGUI
             }
             catch (Exception ex)
             {
-               MessageBox.Show("Error loading XML topology file: " + ex.Message, "FraMMWorks Topology Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+               MessageBox.Show("Error loading FMX model file: " + ex.Message, "FraMMWorks Topology Model Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
          }
+
+         // update the GUI with this topology if it's loaded
+         if (topologyEditor != null && !topologyEditor.IsDisposed)
+         {
+            topologyEditor.Topology = topology;
+         }
+
       }
 
       private void timeBar_ValueChanged(object sender, EventArgs e)

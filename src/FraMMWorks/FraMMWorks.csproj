@@ -41,14 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\ControlAPI.cs" />
+    <Compile Include="Core\ITopology.cs" />
     <Compile Include="Core\PluginManager.cs" />
     <Compile Include="Core\ProcessingException.cs" />
     <Compile Include="Core\ProcessingPipeline.cs" />
     <Compile Include="Core\Topology.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Core\Topology.Designer.cs">
-      <DependentUpon>Topology.cs</DependentUpon>
     </Compile>
     <Compile Include="FrameTypes\AudioFrame.cs" />
     <Compile Include="FrameTypes\Frame.cs" />
@@ -66,10 +63,6 @@
     <Compile Include="Interfaces\ISink.cs" />
     <Compile Include="Interfaces\ISource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Core\Topology.resx">
-      <DependentUpon>Topology.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

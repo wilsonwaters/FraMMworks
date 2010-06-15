@@ -221,24 +221,24 @@ namespace FraMMWorks.Core
             for (int i = 0; i < found.Length; i++) found[i] = false;
 
             // This will be the currentTopologyGraph at the end of this operation
-            List<GraphJoinerThreadInfo> newTopologyGraph = new List<GraphJoinerThreadInfo>(topology.TopologyGraph.Count);
+            List<GraphJoinerThreadInfo> newTopologyGraph = new List<GraphJoinerThreadInfo>(topology.GetTopologyGraph().Count);
 
             // We're now set to active - not really true, but each thread is started in an active state
             // This is done so we are notified of any thread startup errrors
             active = true;
 
             // check each of the new topology edges and create new links as needed
-            for (int i = 0; i < topology.TopologyGraph.Count; i++)
+            for (int i = 0; i < topology.GetTopologyGraph().Count; i++)
             {
                // Check if this edge already exists in the processing chain.
-               int foundIndex = searchForEdge(topology.TopologyGraph[i]);
+               int foundIndex = searchForEdge(topology.GetTopologyGraph()[i]);
                if (foundIndex < 0)
                {
                   // This link hasn't been created yet, so start it now
                   Thread t = new Thread(new ParameterizedThreadStart(graphJoinerThread));
-                  t.Start(topology.TopologyGraph[i]);
+                  t.Start(topology.GetTopologyGraph()[i]);
                   GraphJoinerThreadInfo info = new GraphJoinerThreadInfo();
-                  info.edge = topology.TopologyGraph[i];
+                  info.edge = topology.GetTopologyGraph()[i];
                   info.thread = t;
                   newTopologyGraph.Insert(i, info);
                }
@@ -401,6 +401,8 @@ namespace FraMMWorks.Core
             // We,re only interested in errors if the pipeline is active.
             if (active)
             {
+               if (e.vertex1 == null && e.vertex2 == null)
+                  ControlAPI.Instance.nonFatalError(this, "Error in plugin. thread exiting for <null> -> <null>\r\n{0}", ex.Message);
                if (e.vertex1 == null)
                   ControlAPI.Instance.nonFatalError(this, "Error in plugin. thread exiting for <null> -> \"{0}\":{1}({2}). \r\n{3}", e.vertex2.Name, e.vertex2Pin, e.vertex2.InputCapabilities[e.vertex2Pin].Name, ex.Message);
                else if (e.vertex2 == null)
