@@ -57,6 +57,11 @@ Once your tool chain is working acceptably you can save it to an XML file throug
 
 Eventually, you will be able to "Save as application" which will combine all tools and configuration into a single executable. This can then be run as a standalone application.
 
+# Design
+![FraMMWorks flow](docs/FraMMworks-flow.png?raw=true "FraMMworks flow")
+
+![FraMMWorks class diagram](docs/FraMMworks-class.png?raw=true "FraMMworks class")
+
 # License
 Licensed under GNU GENERAL PUBLIC LICENSE v3.0.
 Copyright Wilson Waters 2009
